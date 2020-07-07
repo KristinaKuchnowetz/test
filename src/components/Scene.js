@@ -18,13 +18,13 @@ export default class Scene extends React.Component {
 
     componentDidMount() {
         console.log(this.props)
-        this.createScene(this.props.form, this.props.geometry)
+        this.createScene(this.props.form, Number(this.props.geometry))
     }
 
     createFigure = (str, s) => {
         if (str === "Box") {
             let geometry = new THREE.BoxGeometry(s, s, s);
-            let material = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
+            let material = new THREE.MeshStandardMaterial({ color: 0x156289 });
             let cube = new THREE.Mesh(geometry, material);
 
             let copy = [...this.state.list];
@@ -32,10 +32,11 @@ export default class Scene extends React.Component {
             this.setState({
                 list: copy
             })
+
             return cube
-        } else if (str = "Sphere") {
-            let geometry = new THREE.SphereGeometry(s, s, s);
-            let material = new THREE.MeshBasicMaterial({ color: 0xffff00 });
+        } else if (str === "Sphere") {
+            let geometry = new THREE.SphereGeometry(s);
+            let material = new THREE.MeshStandardMaterial({ color: 0xffff00});
             let sphere = new THREE.Mesh(geometry, material);
 
             let copy = [...this.state.list];
@@ -45,8 +46,8 @@ export default class Scene extends React.Component {
             })
             return sphere
         } else {
-            let geometry = new THREE.ConeGeometry(s, s, s);
-            let material = new THREE.MeshBasicMaterial({ color: 0xffff00 });
+            let geometry = new THREE.ConeGeometry(s);
+            let material = new THREE.MeshStandardMaterial({ color: 0xff0f00 });
             let cone = new THREE.Mesh(geometry, material);
 
             let copy = [...this.state.list];
@@ -77,13 +78,27 @@ export default class Scene extends React.Component {
             controls = new OrbitControls( camera, renderer.domElement );
         }
 
-
         let result = this.createFigure(f, g);
         scene.add(result);
         result.position.set(Math.random(),Math.random(),Math.random())
 
-        camera.position.z = 5;
+        // light 
+        const lights = [];
+        lights[0] = new THREE.PointLight(0xffffff, 1, 0);
+        lights[1] = new THREE.PointLight(0xffffff, 1, 0);
+        lights[2] = new THREE.PointLight(0xffffff, 1, 0);
+
+        lights[0].position.set(0, 200, 0);
+        lights[1].position.set(100, 200, 100);
+        lights[2].position.set(- 100, - 200, - 100);
+
+        scene.add(lights[0]);
+        scene.add(lights[1]);
+        scene.add(lights[2]);
+
+        camera.position.z = 9;
         controls.update();
+
         let animate = function () {
             requestAnimationFrame(animate);
             result.rotation.x += 0.01;
@@ -94,9 +109,7 @@ export default class Scene extends React.Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        if (this.props.form !== nextProps.form) {
-            this.createScene(nextProps.form, nextProps.geometry)
-        }
+        this.createScene(nextProps.form, Number(nextProps.geometry))
     }
 
 
@@ -108,15 +121,17 @@ export default class Scene extends React.Component {
                     obj = scene.children[i];
                     scene.remove(obj);
 
-                    let copy = [...this.state.list]
-                    let index = copy.indexOf(e)
-                    copy.splice(index, 1)
-                    this.setState({
-                        list: copy
-                    })
+                   
                 }
             }
         }
+
+        let copy = [...this.state.list]
+        let res = copy.filter( x => x.id !== e)
+
+        this.setState({
+            list: res
+        })
 
     }
 
@@ -125,11 +140,11 @@ export default class Scene extends React.Component {
 
         return (
             <div>
-                <div ref={ref => (this.mount = ref)} >
+                <div ref={ref => (this.mount = ref)}>
 
                 </div>
                 {list && list.length > 0 && list.map(x => 
-                <div key={x.id} style={{display: "flex"}}>
+                <div key={x.id} style={{display: "flex", margin: "5px 0"}}>
                     <p>{x.id}</p>
                     <button onClick={() => this.removeFigure(x.id)}>Delete</button>
                 </div>)}
