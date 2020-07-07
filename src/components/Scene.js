@@ -71,7 +71,7 @@ export default class Scene extends React.Component {
 
         if (!renderer) {
             renderer = new THREE.WebGLRenderer();
-            renderer.setSize(window.innerWidth, window.innerHeight);
+            renderer.setSize(this.mount.clientWidth, window.innerHeight);
             this.mount.appendChild(renderer.domElement);
         }
 
@@ -142,7 +142,7 @@ export default class Scene extends React.Component {
             <div>
                 <div ref={ref => (this.mount = ref)} style={{width: "100%", height: "100%"}}>
                 </div>
-                <table style={{ border: "1px solid black" }}>
+                <table style={{ border: "1px solid black", margin: "20px" }}>
                     <thead>
                         <tr>
                             <th>Id</th>

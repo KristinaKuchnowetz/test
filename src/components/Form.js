@@ -36,7 +36,7 @@ export default class Form extends React.Component {
 
         
         return (
-            <div style={{display: "flex", justifyContent:"center"}}>
+            <div style={{display: "flex", justifyContent:"center", marginTop: "20px"}}>
             <form onSubmit={this.sendData} style={{display: "flex", flexDirection: "column", width: "15%"}}>
                 <Select
                     value={form}
