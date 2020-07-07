@@ -1,5 +1,6 @@
 import React from 'react';
 import * as THREE from "three";
+import {OrbitControls} from "three/examples/jsm/controls/OrbitControls";
 
 var scene
 var camera
@@ -73,7 +74,7 @@ export default class Scene extends React.Component {
         }
 
         if(!controls){
-            // controls = new OrbitControls( camera, renderer.domElement );
+            controls = new OrbitControls( camera, renderer.domElement );
         }
 
 
@@ -82,7 +83,7 @@ export default class Scene extends React.Component {
         result.position.set(Math.random(),Math.random(),Math.random())
 
         camera.position.z = 5;
-        // controls.update();
+        controls.update();
         let animate = function () {
             requestAnimationFrame(animate);
             result.rotation.x += 0.01;
