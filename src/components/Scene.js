@@ -6,6 +6,7 @@ var scene
 var camera
 var renderer
 var controls
+var lights = []
 
 export default class Scene extends React.Component {
     constructor(props) {
@@ -71,7 +72,7 @@ export default class Scene extends React.Component {
         if (!renderer) {
             renderer = new THREE.WebGLRenderer();
             renderer.setSize(window.innerWidth, window.innerHeight);
-            document.body.appendChild(renderer.domElement);
+            this.mount.appendChild(renderer.domElement);
         }
 
         if(!controls){
@@ -83,7 +84,6 @@ export default class Scene extends React.Component {
         result.position.set(Math.random(),Math.random(),Math.random())
 
         // light 
-        const lights = [];
         lights[0] = new THREE.PointLight(0xffffff, 1, 0);
         lights[1] = new THREE.PointLight(0xffffff, 1, 0);
         lights[2] = new THREE.PointLight(0xffffff, 1, 0);
