@@ -1,6 +1,6 @@
 import React from 'react';
 import * as THREE from "three";
-import {OrbitControls} from "three/examples/jsm/controls/OrbitControls";
+import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 
 var scene
 var camera
@@ -29,7 +29,7 @@ export default class Scene extends React.Component {
             let cube = new THREE.Mesh(geometry, material);
 
             let copy = [...this.state.list];
-            copy.push({id: cube.uuid})
+            copy.push({ id: cube.uuid })
             this.setState({
                 list: copy
             })
@@ -37,11 +37,11 @@ export default class Scene extends React.Component {
             return cube
         } else if (str === "Sphere") {
             let geometry = new THREE.SphereGeometry(s);
-            let material = new THREE.MeshStandardMaterial({ color: 0xffff00});
+            let material = new THREE.MeshStandardMaterial({ color: 0xffff00 });
             let sphere = new THREE.Mesh(geometry, material);
 
             let copy = [...this.state.list];
-            copy.push({id: sphere.uuid})
+            copy.push({ id: sphere.uuid })
             this.setState({
                 list: copy
             })
@@ -52,7 +52,7 @@ export default class Scene extends React.Component {
             let cone = new THREE.Mesh(geometry, material);
 
             let copy = [...this.state.list];
-            copy.push({id: cone.uuid})
+            copy.push({ id: cone.uuid })
             this.setState({
                 list: copy
             })
@@ -75,13 +75,13 @@ export default class Scene extends React.Component {
             this.mount.appendChild(renderer.domElement);
         }
 
-        if(!controls){
-            controls = new OrbitControls( camera, renderer.domElement );
+        if (!controls) {
+            controls = new OrbitControls(camera, renderer.domElement);
         }
 
         let result = this.createFigure(f, g);
         scene.add(result);
-        result.position.set(Math.random(),Math.random(),Math.random())
+        result.position.set(Math.random(), Math.random(), Math.random())
 
         // light 
         lights[0] = new THREE.PointLight(0xffffff, 1, 0);
@@ -117,17 +117,17 @@ export default class Scene extends React.Component {
         let obj, i;
         if (scene.children.length > 0) {
             for (i = scene.children.length - 1; i >= 0; i--) {
-                if(scene.children[i].uuid === e){
+                if (scene.children[i].uuid === e) {
                     obj = scene.children[i];
                     scene.remove(obj);
 
-                   
+
                 }
             }
         }
 
         let copy = [...this.state.list]
-        let res = copy.filter( x => x.id !== e)
+        let res = copy.filter(x => x.id !== e)
 
         this.setState({
             list: res
@@ -140,14 +140,22 @@ export default class Scene extends React.Component {
 
         return (
             <div>
-                <div ref={ref => (this.mount = ref)}>
-
+                <div ref={ref => (this.mount = ref)} style={{width: "100%", height: "100%"}}>
                 </div>
-                {list && list.length > 0 && list.map(x => 
-                <div key={x.id} style={{display: "flex", margin: "5px 0"}}>
-                    <p>{x.id}</p>
-                    <button onClick={() => this.removeFigure(x.id)}>Delete</button>
-                </div>)}
+                <table style={{ border: "1px solid black" }}>
+                    <thead>
+                        <tr>
+                            <th>Id</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {list && list.length > 0 && list.map(x => <tr key={x.id}>
+                            <td>{x.id}</td>
+                            <td><button onClick={() => this.removeFigure(x.id)}>Delete</button></td>
+                        </tr>)}
+                    </tbody>
+                </table>
             </div>
         );
     }

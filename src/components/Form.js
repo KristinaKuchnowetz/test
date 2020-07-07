@@ -36,15 +36,17 @@ export default class Form extends React.Component {
 
         
         return (
-            <form onSubmit={this.sendData}>
+            <div style={{display: "flex", justifyContent:"center"}}>
+            <form onSubmit={this.sendData} style={{display: "flex", flexDirection: "column", width: "15%"}}>
                 <Select
                     value={form}
                     onChange={this.handleChange}
                     options={options}
                 />
-                <input type="number" min="1" max="10" value={geometry} onChange={this.handleInput} style={{margin: "10px 0"}}/>
-                <button type="submit" style={{margin: "20px 0"}} disabled={form && geometry ? false : true}>Create</button>
+                <input type="number" min="1" max="10" value={geometry} onChange={this.handleInput} style={{margin: "10px 0 0 0 ", border: "2px solid #eee", padding: "8px 0"}}/>
+                <button type="submit" style={{margin: "10px 0 20px 0", padding: "5px 0"}} disabled={form && geometry ? false : true}>Create</button>
             </form>
+            </div>
         );
     }
 }
